@@ -2,6 +2,7 @@
 library(tidyverse)
 library(forecast)
 library(smoother)
+library(HDInterval)
 #Putting in pre sets for gamma value for Bettencourt and Ribeiros formula
 # Setting max r value, realistically will rarely be above 2, but 12 is used for safety
 
