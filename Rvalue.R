@@ -9,7 +9,7 @@ library(smoother)
 R_T_MAX = 12
 r_t_range = seq(0, R_T_MAX, length = R_T_MAX*100 + 1)
 
-# Gamma is 1/serial interval as un D Zou's paper
+# Gamma is 1/serial interval as un Du 's paper
 GAMMA = 1/4
 
 # Inserting English data from Gov.UK for regional rates
