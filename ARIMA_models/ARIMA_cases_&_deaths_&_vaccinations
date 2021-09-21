@@ -1,0 +1,165 @@
+library(forecast)
+library(MLmetrics)
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(patchwork)
+
+
+
+
+
+
+#Read in Data Set#
+ukcovid <- read.csv("~/Desktop/timeseriesdata.csv")
+ukcovid1 <- read.csv("~/Desktop/timeseriesdata.1.csv")
+
+#Create 2 Subset Data sets#
+names(ukcovid)
+#Data set for the number of cases
+ukcovid20 <- subset(ukcovid, y<=524)
+ukcovid21 <- subset(ukcovid, y>524)
+
+#data set used for the number of deaths
+ukcovid201 <- subset(ukcovid1, y<=486)
+#All records from 2021
+ukcovid211 <- subset(ukcovid1, y>486)
+
+
+
+
+#now changed it to be applied to all the values bar the last 30, doing so works with
+# much greater efficiency
+
+#Plot time series for all records, cases and log of the deaths#
+ts_ukcovid19d <-ts (ukcovid201$logdeaths, frequency = 1,start = c(08/03/2020,1))
+ts_ukcovid19c <-ts (ukcovid20$Cases, frequency = 1,start = c(30/01/2020,1))
+plot(ts_ukcovid19c)
+plot(ts_ukcovid19d)
+
+#Registered cases testing the forcasting model
+autoarima1 <- auto.arima(ts_ukcovid19c)
+forecast1 <- forecast(autoarima1, h=30) # h is the number of future points forecasted
+cm <- MAPE(forecast1$mean, ukcovid21$Cases) #calculate MAPE (mean absolute percentage error)
+plot(forecast1,ylab='Daily number of cases',xlab='Days from 30/01/2020')
+plot(forecast1,ylab='Daily number of cases',xlab='Days from 30/01/2020')
+lines(ukcovid$Cases, col='purple')
+text(100,y=3000000, paste0('MAPE=',round(cm*100,3),'%'),adj=1)
+plot(forecast1$residuals) # these were commented out
+qqnorm(forecast1$residuals) # these were commented out
+
+#Registered log deaths testing the forcasting model
+autoarima2 <- auto.arima(ts_ukcovid19d)
+forecast2 <- forecast(autoarima2, h=30) # predicting future the days number of log deaths
+dm <- MAPE(forecast2$mean, ukcovid21$Death) #calculate MAPE
+plot(forecast2,ylab='log daily number of deaths',xlab='Days from 08/03/2020')
+plot(forecast2,ylab='log daily number of deaths',xlab='Days from 08/03/2020')
+lines(ukcovid1$logdeaths, col='purple')
+text(100,y=100000, paste0('MAPE=',round(dm*100,3),'%'),adj=1)
+#plot(forecast1$residuals)
+#qqnorm(forecast1$residuals)
+
+#Registered cases forcasting for august and september
+ts_ukcovid19dd <-ts (ukcovid1$logdeaths, frequency = 1,start = c(08/03/2020,1))
+ts_ukcovid19cc <-ts (ukcovid$Cases, frequency = 1,start = c(30/01/2020,1))
+
+# Forecasting the number of cases for the future 30 days 
+autoarima3 <- auto.arima(ts_ukcovid19cc)
+forecast3 <- forecast(autoarima3, h=30)
+#calculate MAPE
+plot(forecast3,ylab='daily number of cases with a future prediction',xlab='Days from 30/01/2020')
+plot(forecast1$residuals)
+#qqnorm(forecast1$residuals)
+
+#  Forecasting the log number of deaths for the future 30 days 
+autoarima4 <- auto.arima(ts_ukcovid19dd)
+forecast4 <- forecast(autoarima4, h=30)
+#calculate MAPE
+plot(forecast4,ylab='log daily number of deaths with future prediction',xlab='Days from 08/03/2020')
+plot(forecast1$residuals)
+qqnorm(forecast1$residuals)
+
+
+
+
+# 1st vaccinations 
+uk_vaccines_covid <- read.csv("~/Desktop/book4.csv")
+
+names(uk_vaccines_covid)
+uk_vaccines_covid20 <- subset(uk_vaccines_covid, y<=177)
+uk_vaccines_covid21 <- subset(uk_vaccines_covid, y>177)
+
+
+
+#Plot time series for all recorded vaccines
+ts_uk_vaccines_covid19e <-ts (uk_vaccines_covid20$cum1stvac, frequency = 1,start = c(11/01/2021,1))
+
+plot(ts_uk_vaccines_covid19e)
+
+
+#Registered vaccinations forcasted
+autoarima1 <- auto.arima(ts_uk_vaccines_covid19e)
+forecast1 <- forecast(autoarima1, h=30) # pretty sure h is the number of future points forecasted
+#calculate MAPE (mean absolute percentage error)
+
+cm <- MAPE(forecast1$mean, uk_vaccines_covid21$cum1stvac)
+plot(forecast1,ylab='Cumalative number of 1st vaccinations',xlab='Days from 11/01/2021')
+plot(forecast1,ylab='Cumalative number of 1st vaccinations',xlab='Days from 11/01/2021')
+lines(uk_vaccines_covid$cum1stvac, col='purple')
+text(100,y=3000000, paste0('MAPE=',round(cm*100,3),'%'),adj=1)
+plot(forecast1$residuals) # these were commented out
+qqnorm(forecast1$residuals) # these were commented out
+
+
+
+
+# 2nd vaccination
+uk_vaccines_covid <- read.csv("~/Desktop/book4.csv")
+
+names(uk_vaccines_covid)
+uk_vaccines_covid201 <- subset(uk_vaccines_covid, y<=177)
+uk_vaccines_covid211 <- subset(uk_vaccines_covid, y>177)
+
+
+
+#Plot time series for all records, cases and deaths#
+ts_uk_vaccines_covid19f <-ts (uk_vaccines_covid20$cum2ndvac, frequency = 1,start = c(11/01/2021,1))
+
+plot(ts_uk_vaccines_covid19f)
+
+
+#Registered vaccinations forcasted
+autoarima1 <- auto.arima(ts_uk_vaccines_covid19f)
+forecast2 <- forecast(autoarima1, h=30) # pretty sure h is the number of future points forecasted
+#calculate MAPE (mean absolute percentage error)
+
+cm <- MAPE(forecast2$mean, uk_vaccines_covid21$cum2ndvac)
+plot(forecast2,ylab='Cumalative number of 2nd vaccinations',xlab='Days from 11/01/2021')
+plot(forecast2,ylab='Cumalative number of 2nd vaccinations',xlab='Days from 11/01/2021')
+lines(uk_vaccines_covid$cum2ndvac, col='purple')
+text(100,y=3000000, paste0('MAPE=',round(cm*100,3),'%'),adj=1)
+plot(forecast1$residuals) # these were commented out
+qqnorm(forecast1$residuals) # these were commented out
+
+
+
+
+#Registered vaccinations forcasting for august and september
+ts_ukcovid19ee <-ts (uk_vaccines_covid201$cum1stvac, frequency = 1,start = c(11/01/2021,1))
+ts_ukcovid19ff <-ts (uk_vaccines_covid201$cum2ndvac, frequency = 1,start = c(11/01/2021,1))
+
+# Forecasting the number of 1st does vaccinatoins for the future 30 days 
+autoarima5 <- auto.arima(ts_ukcovid19ee)
+forecast5 <- forecast(autoarima5, h=30)
+#calculate MAPE
+plot(forecast5,ylab='cumulative number of 1st vaccinations with a future prediction',xlab='Days from 11/01/2021')
+plot(forecast1$residuals)
+#qqnorm(forecast1$residuals)
+
+#  Forecasting the number of second vaccinations for the future 30 days 
+autoarima4 <- auto.arima(ts_ukcovid19ff)
+forecast4 <- forecast(autoarima4, h=30)
+#calculate MAPE
+plot(forecast4,ylab= 'cumulative number of 2nd vaccinations with a future prediction',xlab='Days from 11/01/2021')
+plot(forecast1$residuals)
+qqnorm(forecast1$residuals)
