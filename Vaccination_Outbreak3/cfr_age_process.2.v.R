@@ -2,11 +2,11 @@
 ##                 Vaccinations period                                            ##
 ##  1) Data Collation and Preprocessing - An Overview                             ##
 ##                                                                                ##
-##   This section loads in data on the demographic structure of the UK       ##
+##   This section loads in data on the demographic structure of the UK            ##
 ##   population, as well as daily case data for NorthWest (Region) and rest of    ##
-##   UK from information from the UK Health Deparment. This is integrated    ##
+##   UK from information from the UK Health Deparment. This is integrated         ##
 ##   with information on the Age distribution of cases from reports from the      ##
-##   UK Govt to calculate the age distribution of cases for NorthWest 	      ##
+##   UK Govt to calculate the age distribution of cases for NorthWest 	          ##
 ##   and the rest of UK.                                                          ##
 ##                                                                                ##
 ##   Assuming an invariant age-distribution of cases over time, this is then      ##
@@ -20,7 +20,7 @@ library(tidyverse)
 
 # Loading in Demographic and Case Data
 population <- read.csv("~/desktop/UK_population_demography.csv") 
-Epicentro_report_onset <- read.csv("~/desktop/Epicentro_onset_data.2.v.csv")
+Epicentro_report_onset <- read.csv("~/desktop/Gov_UK_data.2.v.csv")
 
 # Setting Static Variables
 smoothing_centre <- as.Date("2021-06-28", format = "%Y-%m-%d")
