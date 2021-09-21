@@ -7,7 +7,7 @@ library(ggplot2)
 library(patchwork)
 
 # Load functions
-source("~/desktop/mcmc_summary.2.R")
+source("~/desktop/mcmc_summary.2.v.R")
 source("~/desktop/mcmc_with_my_prior.R")
 
 # Read input raw data
