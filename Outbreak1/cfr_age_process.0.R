@@ -37,10 +37,7 @@ age_groups <- c("0-9", "10-19", "20-29", "30-39", "40-49", "50-59", "60-69", "70
 ##    Firstly we need to ensure the data is in the correct format                 ##
 ##    We calculate the incidence of cases outside UK over time.                   ##
 ##    Also contains code to correct for incidence spike that occurred in          ##
-##    early October. Initial linear interpolation of case numbers between         ##
-##    October 3rd and October 5th, followed by distribution of cases              ##
-##    equally around 3 days either side.                                          ##
-##                                                                                ##
+##    early March.                                                                ##
 ####################################################################################
 
 # Loading in Raw Case Onset Incidence Data
