@@ -13,7 +13,7 @@ source("~/desktop/mcmc_with_my_prior.R")
 # Read input raw data
 data <- readRDS("~/desktop/age_disaggregated_onset_incidence_data.rds")
 observed_deaths <- c(0, 5, 19, 55, 174, 471, 1243, 3269, 7714)
-observed_cases <- c(40657, 140397, 204950, 166935, 148883, 149800, 79741, 43280, 41284) #change for just england?
+observed_cases <- c(40657, 140397, 204950, 166935, 148883, 149800, 79741, 43280, 41284)
 prop_NorthWest <- 3632 / 12950
 crude_cfr <- 12950 / 1015927
 
