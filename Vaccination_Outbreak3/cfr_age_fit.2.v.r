@@ -6,8 +6,8 @@
 ##    integrated with age-disaggregated deaths from NorthWest and outside over 	  ##
 ##    the same time period. We then fit an age-specific CFR model to these data,  ##
 ##    which explicitly includes considerations of under-reporting related to      ##
-##    age-specific patterns of disease severity as well as the capacity of local  ##
-##    health systems.                                                             ##
+##    age-specific patterns of disease severity.                                   ##
+##                                                                                ##
 ##                                                                                ##
 ####################################################################################
 
@@ -34,9 +34,8 @@ data <- age_disaggregated_case_onset %>%
 age_groups <- c("0_9", "10_19", "20_29", "30_39", "40_49", "50_59", "60_69", "70_79", "80+")
 n_age_bands <- length(unique(data$age_groups))
 max_date <- as.numeric(max(data$date) - min(data$date)) # most recent date in the date, relative to date start
-observed_deaths <- c(1, 7, 19, 25, 59, 105, 191, 261, 520) # (by age, Table 1 of UK CDC report)
-prop_deaths_NorthWest <- 398 / 1188  # scraped from official UK Health Commission report, by date reporting end = 11-02-2020
-# note that the exact numbers differs slightly from UK CDC paper. Assume proportion is correct
+observed_deaths <- c(1, 7, 19, 25, 59, 105, 191, 261, 520) # (by age, Gov.UK report)
+prop_deaths_NorthWest <- 398 / 1188  # scraped from official Gov.UK data
 # and apply this proportion to the number of deaths detailed in the UK CDC paper.
 deaths_NorthWest <- round(prop_deaths_NorthWest * sum(observed_deaths))
 deaths_outside <- (1 - prop_deaths_NorthWest) * sum(observed_deaths)
@@ -44,14 +43,14 @@ death_observation_censoring <- as.numeric(as.Date("2020-02-28") - min(data$date)
 deaths_x <- round(prop_deaths_NorthWest * sum(observed_deaths))
 deaths_n <- sum(observed_deaths)
 # Gov-uk deaths and cases: 
-ISS_observed_deaths <- 1188
-ISS_observed_cases <- 570139 #adjusted for new number of cases by day and vaccinations #1186326
+Gov_observed_deaths <- 1188
+Gov_observed_cases <- 570139 #adjusted for new number of cases by day and vaccinations #1186326
 # Input data
 x <- c(0, n_age_bands,
        death_observation_censoring,
        min(data[data$location == "Outside", "nici"]),
        deaths_x, deaths_n,
-       ISS_observed_deaths, ISS_observed_cases,
+       Gov_observed_deaths, Gov_observed_cases,
        observed_deaths,
        data$cases, as.numeric(as.factor(data$age_groups)),
        data$date - min(data$date), as.numeric(data$location == "NorthWest"),
